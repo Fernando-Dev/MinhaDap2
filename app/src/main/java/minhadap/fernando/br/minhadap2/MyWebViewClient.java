@@ -2,6 +2,8 @@ package minhadap.fernando.br.minhadap2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Base64;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
