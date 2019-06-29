@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Minha Dap</string>
+    <string name="voltar_inicio">Voltar ao Início</string>
+    <string name="pesquisar_dap">Pesquisar DAP</string>
+    <string name="dados_dap">Dados da DAP</string>
+    <string name="sem_internet">Não há conexão com Internet.</string>
+    <string name="copy_right" translatable="false">Fernando Nascimento © %1$d</string>
+    <string name="sobre">Sobre</string>
+    <string name="sair">Sair</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="extrato_dap">Extrato de Dap</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="imprimir">Salvar em PDF</string>
+    <string name="ajuda">Ajuda</string>
+    <string name="nome_agricultor">Nome do Agricultor</string>
+    <string name="nome_arquivo">Renomear Arquivo</string>
+    <string name="salvar">SALVAR</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="editar">Editar</string>
+</resources>
