@@ -1,6 +1,7 @@
 package minhadap.fernando.br.minhadap2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +18,11 @@ import java.io.IOException;
 
 public class SecondActivity extends AppCompatActivity {
 
-    private WebView webView2;
+    public WebView webView2;
     private Document document;
     private Element barra, btnExportar,btnVisual1;
     private Elements header, footer, mensagem, botaoVoltar, btnVisual2;
-    private String url;
+    public String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

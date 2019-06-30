@@ -35,10 +35,6 @@
             android:label="@string/dados_dap">
         </activity>
         <activity
-            android:name=".FourActivity"
-            android:label="@string/extrato_dap">
-        </activity>
-        <activity
             android:name=".Sobre"
             android:label="@string/sobre"
             android:parentActivityName=".MainActivity">

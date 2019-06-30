@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -76,25 +77,35 @@ import static com.itextpdf.text.BaseColor.*;
 
 public class ThreeActivity extends AppCompatActivity {
 
-    private WebView webView3;
+    public WebView webView3;
     private Document document;
     private Element barra, btnExportar, nome;
     private Elements header, footer, mensagem, botaoVoltar;
-    private String url;
+    public String url;
     private String nomeAgricultor = "ExtratoDeDap";
     private File docFolder, pdfFile;
     private static final int REQUEST_TAKE_FILE = 1;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
     private WebSettings webSettings;
+    private SharedPreferences.Editor layout;
+    private SharedPreferences layoutSalvo;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_three);
 
-        carregaPagina();
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            url = extra.getString("URL");
+        }
+        layoutSalvo = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
 
+        if (layoutSalvo.contains("idLayout2")) {
+            carregaPaginaQuatro();
+        } else {
+            carregaPaginaTres();
+        }
         try {
             PdfWrapper();
         } catch (FileNotFoundException e) {
@@ -105,14 +116,18 @@ public class ThreeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        layout = getSharedPreferences("MY_PREFS", MODE_PRIVATE).edit();
+        layout.putInt("idLayout2", 2);
+        layout.apply();
+        layout.commit();
+        super.onStart();
+    }
     // carregar a pagina
 
-    private void carregaPagina() {
-        Bundle extra = getIntent().getExtras();
-        if (extra != null) {
-            url = extra.getString("URL");
-        }
-
+    private void carregaPaginaTres() {
+        setContentView(R.layout.activity_three);
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -140,6 +155,26 @@ public class ThreeActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         webSettings.setBuiltInZoomControls(true);
+        webSettings.setJavaScriptEnabled(true);
+        webView3.loadDataWithBaseURL(url, document.toString(), "text/html", "utf-8", null);
+        webView3.setWebViewClient(new MyWebViewClient(this));
+    }
+
+    private void carregaPaginaQuatro() {
+        setContentView(R.layout.activity_three);
+        setTitle("Extrato de Dap");
+        try {
+            document = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        webView3 = (WebView) findViewById(R.id.webview3);
+        webView3.setInitialScale(1);
+        WebSettings webSettings = webView3.getSettings();
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         webSettings.setJavaScriptEnabled(true);
         webView3.loadDataWithBaseURL(url, document.toString(), "text/html", "utf-8", null);
         webView3.setWebViewClient(new MyWebViewClient(this));
@@ -232,23 +267,24 @@ public class ThreeActivity extends AppCompatActivity {
             previaPdf();
             super.onPostExecute(aVoid);
         }
+
     }
 
     // caixa de dialogo para colocar o nome do agricultor
-    public String dialogoNome(){
+    public String dialogoNome() {
 
         final Dialog dialog = new Dialog(ThreeActivity.this, R.style.DialogoSemTitulo);
         dialog.setContentView(R.layout.dialog_layout);
         dialog.setTitle(R.string.nome_arquivo);
         dialog.setCancelable(true);
-        final EditText text =  dialog.findViewById(R.id.nomeAgricultor);
+        final EditText text = dialog.findViewById(R.id.nomeAgricultor);
         Button btnSalvar = dialog.findViewById(R.id.btnSalvar);
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(text.getText().toString().isEmpty()){
+                if (text.getText().toString().isEmpty()) {
                     text.setError("Campo vazio!");
-                }else{
+                } else {
                     nomeAgricultor = text.getText().toString();
                     dialog.dismiss();
                     Toast.makeText(ThreeActivity.this, "Arquivo renomeado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -405,12 +441,22 @@ public class ThreeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+        layout = getSharedPreferences("MY_PREFS", MODE_PRIVATE).edit();
+        layout.clear();
+        layout.apply();
+        layout.commit();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
         finish();
+        layout = getSharedPreferences("MY_PREFS", MODE_PRIVATE).edit();
+        layout.clear();
+        layout.apply();
+        layout.commit();
         super.onDestroy();
     }
 }
