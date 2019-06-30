@@ -28,7 +28,7 @@ public class Sobre extends AppCompatActivity {
                 .setDescription("O App Minha Dap foi desenvolvido para facilitar o acesso às informações referente à Declaração de Aptidão ao Pronaf (DAP), onde foi adaptado para Plataforma Android tomando como base o sistema web de consulta do Ministério do Desenvolvimento Agrário (MDA). Por meio deste se oferece mais um canal de consulta, tanto aos agricultores quanto aos profissionais que necessitam desta informação. Qualquer dúvida, reclamação, sugestão ou elogio referente ao uso do aplicativo, pode entrar em contato pelo os dados logo abaixo.")
                 .isRTL(false)
                 .setImage(R.drawable.farm)
-                .addItem(new Element().setTitle("Versão 1.2"))
+                .addItem(new Element().setTitle("Versão 1.3"))
                 .addItem(adsElement)
                 .addGroup("Entre em contato")
                 .addEmail("fernando_dev@outlook.com.br")
